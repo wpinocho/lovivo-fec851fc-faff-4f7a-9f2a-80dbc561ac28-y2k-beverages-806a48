@@ -60,11 +60,11 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
 
   return (
     <Sheet open={isOpen} onOpenChange={onClose}>
-      <SheetContent side="right" className="w-full sm:w-96 p-0" aria-describedby="cart-description">
+      <SheetContent side="right" className="w-full sm:w-96 p-0 bg-background border-l-2 border-primary" aria-describedby="cart-description">
         <div className="flex flex-col h-full">
-          <SheetHeader className="p-6 border-b">
+          <SheetHeader className="p-6 border-b-2 border-border">
             <div className="flex items-center justify-between">
-              <SheetTitle>Shopping Cart</SheetTitle>
+              <SheetTitle className="text-2xl font-black uppercase tracking-tight text-primary">Cart</SheetTitle>
             </div>
             <div id="cart-description" className="sr-only">
               Review and modify the products in your shopping cart
@@ -74,13 +74,13 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
           {state.items.length === 0 ? (
             <div className="flex-1 flex items-center justify-center p-6">
               <div className="text-center">
-                <h3 className="text-lg font-medium text-foreground mb-2">
+                <h3 className="text-xl font-bold text-foreground mb-2 uppercase">
                   Your cart is empty
                 </h3>
-                <p className="text-muted-foreground mb-4">
-                  Add some products to start your purchase
+                <p className="text-muted-foreground mb-6">
+                  Add some spirits to start mixing
                 </p>
-                <Button onClick={onClose} variant="outline">
+                <Button onClick={onClose} className="y2k-gradient font-bold uppercase">
                   Continue Shopping
                 </Button>
               </div>
@@ -90,10 +90,10 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
               {/* Cart Items */}
               <div className="flex-1 overflow-y-auto p-6 space-y-4">
                 {state.items.map((item) => (
-                  <Card key={item.key}>
+                  <Card key={item.key} className="border-2 border-border hover:border-primary transition-all">
                     <CardContent className="p-4">
-                      <div className="flex items-start space-x-3">
-                        <div className="w-16 h-16 bg-muted rounded-md overflow-hidden flex-shrink-0">
+                      <div className="flex items-start space-x-4">
+                        <div className="w-20 h-20 bg-muted rounded-lg overflow-hidden flex-shrink-0 border-2 border-border">
                           {item.product.images && item.product.images.length > 0 || item.variant?.image ? (
                             <img
                               src={item.variant?.image || item.product.images![0]}
@@ -108,44 +108,44 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
                         </div>
                         
                         <div className="flex-1 min-w-0">
-                          <h4 className="font-medium text-sm text-foreground line-clamp-2">
+                          <h4 className="font-bold text-sm text-foreground line-clamp-2 uppercase">
                             {item.product.title}{item.variant?.title ? ` - ${item.variant.title}` : ''}
                           </h4>
                           
-                          <div className="flex items-center justify-between mt-3">
-                            <div className="flex items-center space-x-1">
+                          <div className="flex items-center justify-between mt-4">
+                            <div className="flex items-center space-x-2 glass-morphism rounded-lg p-1">
                               <Button
-                                variant="outline"
+                                variant="ghost"
                                 size="icon"
                                 onClick={() => updateQuantity(item.key, item.quantity - 1)}
-                                className="h-7 w-7"
+                                className="h-7 w-7 hover:bg-primary/20"
                               >
                                 <Minus className="h-3 w-3" />
                               </Button>
-                              <span className="font-medium px-2 text-sm">
+                              <span className="font-black px-2 text-sm min-w-[2rem] text-center">
                                 {item.quantity}
                               </span>
                               <Button
-                                variant="outline"
+                                variant="ghost"
                                 size="icon"
                                 onClick={() => updateQuantity(item.key, item.quantity + 1)}
-                                className="h-7 w-7"
+                                className="h-7 w-7 hover:bg-primary/20"
                               >
                                 <Plus className="h-3 w-3" />
                               </Button>
                             </div>
                             
-                            <div className="text-right">
-                              <div className="font-semibold text-sm">
+                            <div className="text-right flex items-center gap-3">
+                              <div className="font-black text-base text-primary">
                                 ${(((item.variant?.price ?? item.product.price) || 0) * item.quantity).toFixed(2)}
                               </div>
                               <Button
                                 variant="ghost"
-                                size="sm"
+                                size="icon"
                                 onClick={() => removeItem(item.key)}
-                                className="text-destructive hover:text-destructive p-0 h-auto mt-1"
+                                className="text-destructive hover:text-destructive hover:bg-destructive/10 h-8 w-8"
                               >
-                                <Trash2 className="h-3 w-3" />
+                                <Trash2 className="h-4 w-4" />
                               </Button>
                             </div>
                           </div>
@@ -157,17 +157,16 @@ export const CartSidebar = ({ isOpen, onClose }: CartSidebarProps) => {
               </div>
 
               {/* Order Summary */}
-              <div className="border-t p-6">
-                <div className="space-y-3">
-                  <div className="flex justify-between font-semibold text-lg">
-                    <span>Total</span>
-                    <span>${finalTotal.toFixed(2)}</span>
+              <div className="border-t-2 border-border p-6 glass-morphism">
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="font-black text-lg uppercase tracking-wide">Total</span>
+                    <span className="font-black text-2xl text-primary">${finalTotal.toFixed(2)}</span>
                   </div>
                 </div>
 
                 <Button 
-                  className="w-full mt-4" 
-                  size="lg" 
+                  className="w-full mt-6 py-6 y2k-gradient font-black uppercase text-lg hover:y2k-glow transition-all" 
                   onClick={handleCreateCheckout} 
                   disabled={isCreatingOrder}
                 >
